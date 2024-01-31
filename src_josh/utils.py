@@ -19,7 +19,6 @@ DISTORTIONS_CHN = [
 DISTORTIONS_KGL = [
     "Personalization",
     "Labeling",
-    "No Distortion",
     "Fortune-telling",
     "Magnification",
     "Mind Reading",
