@@ -4,9 +4,9 @@ import json
 
 
 ##### UNCOMMENT IF NEED TO USE TRANSLATION #####
-# model_name = "Helsinki-NLP/opus-mt-zh-en"
-# tokenizer = MarianTokenizer.from_pretrained(model_name)
-# model = MarianMTModel.from_pretrained(model_name)
+model_name = "Helsinki-NLP/opus-mt-zh-en"
+tokenizer = MarianTokenizer.from_pretrained(model_name)
+model = MarianMTModel.from_pretrained(model_name)
 
 def translate_chinese_to_english(text):
     translated = model.generate(**tokenizer(text, return_tensors="pt", padding=True))
@@ -74,5 +74,24 @@ def concatonate_data():
     
     concatenated_df.to_csv("data_josh/cognitive_distortion.csv", index=False)
 
+
+def translate_tsv(path_to_file="data_unparsed/cognitive_distortion_val_BERT.tsv"):
+    df = pd.read_csv(path_to_file, sep="\t")
+    all_translated = []
+    df.columns = DISTORTIONS + ["Thought"]
+    for row in df["Thought"]:
+        translated = translate_chinese_to_english(row)[0]
+        all_translated.append(translated)
+        print(translated)
+    
+    df["Thought"] = all_translated
+    
+    column_to_move = df.pop("Thought")
+    df.insert(0, "Thought", column_to_move)
+    
+    df.to_csv("data_unparsed/cognitive_distortion_val.csv", index=False)
+    
+        
+
 # Call the function
-concatonate_data()
+translate_tsv()
