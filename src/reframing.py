@@ -9,6 +9,10 @@ from tqdm import tqdm
 
 import torch
 from sentence_transformers import SentenceTransformer, util
+from dotenv import load_dotenv
+
+if os.environ.get('ENV') != 'production':
+    load_dotenv()
 
 '''
 Arguments
@@ -95,6 +99,7 @@ OpenAI API
 '''
 import openai
 openai.api_key = os.getenv("OPENAI_API_KEY")
+print('OpenAI API key: {}'.format(openai.api_key))
 
 
 test_df = pd.read_csv(args.test_path)
