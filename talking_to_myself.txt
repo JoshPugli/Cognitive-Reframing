@@ -1,0 +1,82 @@
+DATASETS:
+    "Identifying Cognitive Distortions and Suicidal Risks in Chinese Social Media":
+
+        Pros:
+            Social Media Focused
+        Cons:
+            Had to be translated
+
+        DISTORTIONS_CHN = [
+            "Black and White",
+            "Overgeneralization",
+            "Mental Filtering",
+            "Disqualifying the Positive",
+            "Mind Reading",
+            "Fortune Telling",
+            "Catastrophizing",
+            "Emotional Reasoning",
+            "Should Statements",
+            "Labeling",
+            "Self-Blame",
+            "Blaming Others",
+        ]
+
+
+    "Detecting Cognitive Distortions from Patient-Therapist Interactions": 
+
+        Pros:
+            ...
+        Cons:
+            Smaller distortion list
+
+        DISTORTIONS_KGL = [
+            "Personalization",
+            "Labeling",
+            "Fortune-telling",
+            "Magnification",
+            "Mind Reading",
+            "All-or-nothing thinking",
+            "Overgeneralization",
+            "Mental filter",
+            "Emotional Reasoning",
+            "Should statements",
+        ]
+
+
+    "Cognitive Reframing":
+
+        Pros:
+            Gives situation and reframe
+        Cons:
+            ...
+
+        DISTORTIONS_RFM = [
+            "disqualifying the positive",
+            "blaming",
+            "catastrophizing",
+            "mind reading",
+            "comparing and despairing",
+            "all-or-nothing thinking",
+            "fortune telling",
+            "overgeneralizing",
+            "labeling",
+            "should statements",
+            "personalizing",
+            "emotional reasoning",
+            "negative feeling or emotion",
+            "magnification",
+        ]
+
+
+CURRENT PROBLEMS:
+    - Different set of distortions for each datatset
+        - How do we deal with mapping distortions to each other? Min is 10 max is 15. Do we choose 15 distortion list? Do we reduce dimenstionality?
+    - Is chinese dataset well translated enough?
+        - Distortion list also translated
+    - Is the lack of situation and reframe in other datasets an issue?
+
+IMPLEMENTATION IDEAS:
+    - Create unified dataset, with binary distortion encoding similar to chinese dataset
+    - Create extra column for context
+    - Use BErT for generalization help
+    - Feed result into GPT model

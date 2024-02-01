@@ -2,47 +2,67 @@ from transformers import MarianMTModel, MarianTokenizer
 import pandas as pd
 import json
 
-DISTORTIONS_CHN = [
-    "Black and White",
+DISTORTIONS_CHN_UNTRANSLATED = [
+    "非此即彼", # either/or
+    "以偏概全", # generalize from partial to complete
+    "心理过滤", # mental filter
+    "否定正面思考", # Negate positive thinking
+    "读心术", # Mind reading
+    "先知错误", # prophetic error
+    "放大", # enlarge
+    "情绪化推理", # emotional reasoning
+    "应该式", # should form
+    "乱贴标签", # Tags indiscriminately
+    "罪责归己", # Blame yourself
+    "罪责归他", # The blame lies with him
+]
+DISTORTIONS_CHN_TRANSLATED = [
+    "All-or-nothing thinking",
     "Overgeneralization",
-    "Mental Filtering",
-    "Disqualifying the Positive",
+    "Mental Filtering", # Combine this and Disqualifying the Positive into mental filter
+    "Disqualifying the Positive", # Combine this and mental filtering into mental filter
     "Mind Reading",
     "Fortune Telling",
-    "Catastrophizing",
+    "Magnification",
     "Emotional Reasoning",
     "Should Statements",
     "Labeling",
-    "Self-Blame",
-    "Blaming Others",
-]
-DISTORTIONS_KGL = [
     "Personalization",
-    "Labeling",
-    "Fortune-telling",
-    "Magnification",
-    "Mind Reading",
+    
+    "Blaming Others", 
+]
+
+DISTORTIONS_KGL = [
     "All-or-nothing thinking",
     "Overgeneralization",
-    "Mental filter",
-    "Emotional Reasoning",
+    "Mental filter",  # focusing on negatives and ignoring the positives
     "Should statements",
+    "Labeling",
+    "Personalization",
+    "Magnification",
+    "Emotional Reasoning",
+    "Mind Reading",
+    "Fortune-telling",
 ]
+
 DISTORTIONS_RFM = [
-    "disqualifying the positive",
-    "blaming",
-    "catastrophizing",
-    "mind reading",
-    "comparing and despairing",
+    # Same as KGL
     "all-or-nothing thinking",
-    "fortune telling",
     "overgeneralizing",
-    "labeling",
+    "disqualifying the positive",  # focusing on negatives and ignoring the positives
     "should statements",
+    "labeling",
     "personalizing",
-    "emotional reasoning",
-    "negative feeling or emotion",
     "magnification",
+    "emotional reasoning",
+    "mind reading",
+    "fortune telling",
+    
+    # Extra to KGL
+    "blaming",
+    "comparing and despairing",
+    "negative feeling or emotion",
+    "catastrophizing",  # similar to magnification
 ]
 
 
@@ -60,7 +80,7 @@ def translate_chinese_to_english(text):
 def translate_tsv(path_to_file="data_unparsed/cognitive_distortion_val_BERT.tsv"):
     df = pd.read_csv(path_to_file, sep="\t")
     all_translated = []
-    df.columns = DISTORTIONS_CHN + ["Thought"]
+    df.columns = DISTORTIONS_CHN_TRANSLATED + ["Thought"]
     for row in df["Thought"]:
         translated = translate_chinese_to_english(row)[0]
         all_translated.append(translated)
@@ -96,5 +116,19 @@ def get_distortion_list_from_refraiming_dataset():
     return list(s)
 
 
+def get_distortion_list_from_chinese_dataset():
+    f = open("data/data_raw/cognitive_distortion_train.jsonl", "r")
+    line = f.readline()
+    distortions = [
+        x.strip()
+        for x in json.loads(line)["messages"][2]["content"]
+        .split("/n")[0]
+        .split("|")[1:]
+    ]
+
+    return distortions
+
+
 # Call the function
-print(len(get_distortion_list_from_refraiming_dataset()))
+print(get_distortion_list_from_chinese_dataset())
+print(len(get_distortion_list_from_chinese_dataset()))

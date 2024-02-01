@@ -1,5 +1,5 @@
 Dataset used for "Detecting Cognitive Distortions from Patient-Therapist Interactions" by Sagarika Shreevastava and Peter W. Foltz - 
-
+https://www.kaggle.com/datasets/sagarikashreevastava/cognitive-distortion-detetction-dataset?rvi=1
 
 Therapist_responses.csv contains the questions asked by the patients and the respective response by a liscenced therapist. The ID_number given in this dataset can be used to match the annotated Patient's input to the therapist responses. The source of this data: https://www.kaggle.com/datasets/arnmaud/therapist-qa
 
