@@ -128,7 +128,22 @@ def get_distortion_list_from_chinese_dataset():
 
     return distortions
 
+def get_n_hot_for_reframe_dataset():
+    df = pd.read_csv("data/reframing_dataset.csv")
+    n_hots = []
+    for i, row in df.iterrows():
+        n_hot = [0] * len(DISTORTIONS_RFM)
+        for item in row["thinking_traps_addressed"].split(","):
+            try:
+                n_hot[DISTORTIONS_RFM.index(item.strip())] = 1
+            except ValueError:
+                pass
+        print(n_hot)
+        n_hots.append(n_hot)
+    # add n_hot to df. Use DISTORTIONS_RFM as column names
+    df = pd.concat([df, pd.DataFrame(n_hots, columns=DISTORTIONS_RFM)], axis=1)
+    df.to_csv("data/reframing_dataset_2.csv", index=False)
+
 
 # Call the function
-print(get_distortion_list_from_chinese_dataset())
-print(len(get_distortion_list_from_chinese_dataset()))
+print(get_n_hot_for_reframe_dataset())
